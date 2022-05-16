@@ -6,13 +6,13 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc-watch --onSuccess \"node --inspect=5858 dist/main.js\"",
-    "start:tracing": "node -r ./dist/tracing.js ./dist/main.js",
     "build": "rimraf dist && tsc",
     "docker:build": "npm run build && docker build -f ./Dockerfile -t ts-express .",
     "docker:run": "docker run -d --name ts-express -p 3001:3000 ts-express"
   },
   "dependencies": {
     "@opentelemetry/api": "^1.1.0",
+    "@opentelemetry/exporter-jaeger": "^1.2.0",
     "@opentelemetry/exporter-zipkin": "^1.2.0",
     "@opentelemetry/instrumentation-express": "^0.28.0",
     "@opentelemetry/instrumentation-graphql": "^0.27.4",

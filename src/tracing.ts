@@ -5,7 +5,8 @@ import {
   SimpleSpanProcessor,
 } from '@opentelemetry/tracing';
 import { Resource } from '@opentelemetry/resources';
-import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
+// import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
+import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
@@ -27,7 +28,8 @@ const provider = new NodeTracerProvider({
   ),
 });
 
-provider.addSpanProcessor(new BatchSpanProcessor(new ZipkinExporter()));
+// provider.addSpanProcessor(new BatchSpanProcessor(new ZipkinExporter()));
+provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter()));
 provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 
 provider.register();
