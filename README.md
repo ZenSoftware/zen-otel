@@ -7,7 +7,7 @@ Browse to [Jaeger](http://localhost:16686)
 
 ```bash
 # zipkin
-docker run -d -p 9411:9411 openzipkin/zipkin
+docker run -d --name zipkin -p 9411:9411 openzipkin/zipkin
 ```
 
 Browse to [Zipkin](http://localhost:9411/)
