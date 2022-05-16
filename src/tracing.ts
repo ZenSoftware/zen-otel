@@ -15,7 +15,7 @@ export default {
     const provider = new NodeTracerProvider({
       resource: Resource.default().merge(
         new Resource({
-          'service.name': '@zen/api',
+          'service.name': 'zen-api',
         })
       ),
     });
