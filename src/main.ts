@@ -1,6 +1,9 @@
+import aaTracing from './tracing';
 import express from 'express';
 
 async function bootstrap() {
+  aaTracing.start();
+
   const app = express();
 
   app.get('/', (req, res) => {

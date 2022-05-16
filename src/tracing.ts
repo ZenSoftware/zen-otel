@@ -32,4 +32,8 @@ provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 
 provider.register();
 
-console.log('Started OpenTelemetry...');
+export default {
+  start() {
+    console.log('Started OpenTelemetry...');
+  },
+};
