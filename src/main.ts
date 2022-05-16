@@ -1,16 +1,18 @@
 import express from 'express';
-import tracing from './tracing';
 
-tracing.start();
+async function bootstrap() {
+  const app = express();
 
-const app = express();
+  app.get('/', (req, res) => {
+    console.log('hit');
+    res.send('Hello world!');
+  });
 
-app.get('/', (req, res) => {
-  res.send('Hello world!');
-});
+  const PORT = process.env.PORT || 8080;
 
-const PORT = process.env.PORT || 8080;
+  app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
+bootstrap();
