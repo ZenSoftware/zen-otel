@@ -1,4 +1,7 @@
 import express from 'express';
+import tracing from './tracing';
+
+tracing.start();
 
 const app = express();
 

@@ -6,20 +6,24 @@ import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 
-registerInstrumentations({
-  instrumentations: [new HttpInstrumentation() as any, new ExpressInstrumentation()],
-});
+export default {
+  start() {
+    registerInstrumentations({
+      instrumentations: [new HttpInstrumentation() as any, new ExpressInstrumentation()],
+    });
 
-const provider = new NodeTracerProvider({
-  resource: Resource.default().merge(
-    new Resource({
-      'service.name': '@zen/api',
-    })
-  ),
-});
+    const provider = new NodeTracerProvider({
+      resource: Resource.default().merge(
+        new Resource({
+          'service.name': '@zen/api',
+        })
+      ),
+    });
 
-provider.addSpanProcessor(new BatchSpanProcessor(new ZipkinExporter()));
+    provider.addSpanProcessor(new BatchSpanProcessor(new ZipkinExporter()));
 
-provider.register();
+    provider.register();
 
-console.log('Started OpenTelemetry...');
+    console.log('Started OpenTelemetry...');
+  },
+};
