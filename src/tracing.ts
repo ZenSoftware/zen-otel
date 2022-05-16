@@ -1,5 +1,5 @@
 import { NodeTracerProvider } from '@opentelemetry/node';
-import { SimpleSpanProcessor } from '@opentelemetry/tracing';
+import { BatchSpanProcessor } from '@opentelemetry/tracing';
 import { Resource } from '@opentelemetry/resources';
 import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
@@ -13,14 +13,12 @@ registerInstrumentations({
 const provider = new NodeTracerProvider({
   resource: Resource.default().merge(
     new Resource({
-      'service.name': 'zen-optel',
+      'service.name': '@zen/api',
     })
   ),
 });
 
-const zipkinExporter = new ZipkinExporter({ serviceName: 'zen-optel' });
-
-provider.addSpanProcessor(new SimpleSpanProcessor(zipkinExporter));
+provider.addSpanProcessor(new BatchSpanProcessor(new ZipkinExporter()));
 
 provider.register();
 
