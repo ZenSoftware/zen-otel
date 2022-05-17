@@ -11,13 +11,13 @@
     "docker:run": "docker run -d --name ts-express -p 3001:3000 ts-express"
   },
   "dependencies": {
-    "@opentelemetry/api": "^1.1.0",
     "@opentelemetry/exporter-jaeger": "^1.2.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.28.0",
     "@opentelemetry/instrumentation-express": "^0.28.0",
     "@opentelemetry/instrumentation-graphql": "^0.27.4",
     "@opentelemetry/instrumentation-http": "^0.28.0",
-    "@opentelemetry/node": "^0.24.0",
-    "@opentelemetry/tracing": "^0.24.0",
+    "@opentelemetry/sdk-trace-base": "^1.2.0",
+    "@opentelemetry/sdk-trace-node": "^1.2.0",
     "express": "^4.18.1"
   },
   "devDependencies": {

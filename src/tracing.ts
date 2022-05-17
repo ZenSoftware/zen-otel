@@ -1,39 +1,36 @@
-import { NodeTracerProvider } from '@opentelemetry/node';
-import {
+const { JaegerExporter } = require('@opentelemetry/exporter-jaeger');
+const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
+const { registerInstrumentations } = require('@opentelemetry/instrumentation');
+const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
+const { GraphQLInstrumentation } = require('@opentelemetry/instrumentation-graphql');
+const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
+const { Resource } = require('@opentelemetry/resources');
+const {
   BatchSpanProcessor,
   ConsoleSpanExporter,
   SimpleSpanProcessor,
-} from '@opentelemetry/tracing';
-import { Resource } from '@opentelemetry/resources';
-import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
-import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
-import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
-import { registerInstrumentations } from '@opentelemetry/instrumentation';
-import { GraphQLInstrumentation } from '@opentelemetry/instrumentation-graphql';
-
-registerInstrumentations({
-  instrumentations: [
-    new HttpInstrumentation() as any,
-    new ExpressInstrumentation(),
-    new GraphQLInstrumentation(),
-  ],
-});
+} = require('@opentelemetry/sdk-trace-base');
+const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
+const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 
 const provider = new NodeTracerProvider({
   resource: Resource.default().merge(
     new Resource({
-      'service.name': 'zen-api',
+      [SemanticResourceAttributes.SERVICE_NAME]: 'zen-otel',
     })
   ),
 });
 
-provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter()));
 provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+provider.addSpanProcessor(new BatchSpanProcessor(new JaegerExporter()));
+provider.addSpanProcessor(new BatchSpanProcessor(new OTLPTraceExporter()));
 
 provider.register();
 
-export default {
-  start() {
-    console.log('Started OpenTelemetry...');
-  },
-};
+registerInstrumentations({
+  instrumentations: [
+    new HttpInstrumentation(),
+    new ExpressInstrumentation(),
+    new GraphQLInstrumentation(),
+  ],
+});
